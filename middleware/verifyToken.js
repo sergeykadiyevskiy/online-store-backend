@@ -5,34 +5,37 @@ const verifyToken = (req, res, next) => {
   if (authHeader) {
     const token = authHeader.split(" ")[1];
     jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-      if (err) res.status(403).json("Error: Invalid Token.");
+      if (err) res.status(403).json("Token is not valid!");
       req.user = user;
       next();
     });
   } else {
-    return res.status(401).json("Error: Missing Authentication.");
+    return res.status(401).json("You are not authenticated!");
   }
 };
 
-const verifyTokenAndAuth = (req, res, next) => {
+const verifyTokenAndAuthorization = (req, res, next) => {
   verifyToken(req, res, () => {
     if (req.user.id === req.params.id || req.user.isAdmin) {
       next();
     } else {
-      res.status(403).json("Error: Permission Denied.");
+      res.status(403).json("You are not alowed to do that!");
     }
   });
 };
 
 const verifyTokenAndAdmin = (req, res, next) => {
-    verifyToken(req, res, () => {
-      if (!req.user.isAdmin) {
-         next();
-      } else {
-        res.status(403).json("Error: You Do Not Have Sufficient Privilages.");
-      }
-    });
-  };
+  verifyToken(req, res, () => {
+    if (req.user.isAdmin) {
+      next();
+    } else {
+      res.status(403).json("You are not alowed to do that!");
+    }
+  });
+};
 
-module.exports = { verifyToken, verifyTokenAndAuth, verifyTokenAndAdmin };
-
+module.exports = {
+  verifyToken,
+  verifyTokenAndAuthorization,
+  verifyTokenAndAdmin,
+};

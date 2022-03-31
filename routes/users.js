@@ -1,13 +1,13 @@
 const router = require("express").Router();
 const {
   verifyToken,
-  verifyTokenAndAuthorization,
+  verifyTokenAndAuth,
   verifyTokenAndAdmin,
 } = require("../middleware/verifyToken");
 const User = require("../models/User");
 
 //USER TOKEN VERIFICATION
-router.put("/:id", verifyTokenAndAuthorization, async (req, res) => {
+router.put("/:id", verifyTokenAndAuth, async (req, res) => {
   if (req.body.password) {
     req.body.password = CryptoJS.AES.encrypt(
       req.body.password,
@@ -30,7 +30,7 @@ router.put("/:id", verifyTokenAndAuthorization, async (req, res) => {
 });
 
 //DELETE
-router.delete("/:id", verifyTokenAndAuthorization, async (req, res) => {
+router.delete("/:id", verifyTokenAndAuth, async (req, res) => {
   try {
     await User.findByIdAndDelete(req.params.id);
     res.status(200).json("User has been deleted!");

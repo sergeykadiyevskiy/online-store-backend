@@ -66,7 +66,8 @@ router.get("/", verifyTokenAndAdmin, async (req, res) => {
   }
 });
 
-// GET MONTHLY REVENUE
+// GET MONTHLY REVENUE 
+/* all revenue is not working at the moment*/ 
 router.get("/revenue", verifyTokenAndAdmin, async (req, res) => {
     const date = new Date();
     const lastMonth = new Date(date.setMonth(date.getMonth() - 1));

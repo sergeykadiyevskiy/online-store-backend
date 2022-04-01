@@ -12,8 +12,8 @@ router.post("/", verifyToken, async (req, res) => {
   const newCart = new Cart(req.body);
 
   try {
-    const savedProduct = await newCart.save();
-    res.status(200).json(savedProduct);
+    const savedCart = await newCart.save();
+    res.status(200).json(savedCart);
   } catch (err) {
     res.status(500).json(err);
   }
@@ -56,7 +56,15 @@ router.get("/find/:userId", verifyTokenAndAuth, async (req, res) => {
 });
 
 //GET FULL CART
- 
+router.get("/", verifyTokenAndAdmin, async (req, res) => {
+try {
+    const carts = await Cart.find()
+    res.status(200).json(carts)
+}catch(err){
+    res.status(500).json(err)
+}
+
+}) 
 
 
 module.exports = router

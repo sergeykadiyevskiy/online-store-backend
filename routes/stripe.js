@@ -1,6 +1,11 @@
 const router = require("express").Router();
 const stripe = require("stripe")(process.env.STRIPE_KEY);
 
+//is the process not working due to the token? error 500 keep going
+
+// this shit is annoying.
+
+
 router.post("/payment", (req, res) => {
   stripe.charges.create(
       {

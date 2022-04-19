@@ -1,7 +1,7 @@
-const router = require("express").Router();
 const User = require("../models/User");
-const CryptoJS = require("crypto-js");
 const jwt = require("jsonwebtoken");
+const router = require("express").Router();
+const CryptoJS = require("crypto-js");
 
 // SIGN UP
 router.post("/signup", async (req, res) => {

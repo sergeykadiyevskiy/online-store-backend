@@ -1,12 +1,12 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
-const dotenv = require("dotenv")
 const stripeRoute = require("./routes/stripe")
-const authRoute = require("./routes/auth")
+const dotenv = require("dotenv")
 const cartRoute = require("./routes/cart")
-const productRoute = require("./routes/product")
+const authRoute = require("./routes/auth")
 const orderRoute = require("./routes/order")
+const productRoute = require("./routes/product")
 const userRoute = require("./routes/users")
 const cors = require("cors")
 
@@ -22,10 +22,10 @@ app.use(cors())
 app.use(express.json())
 app.use("/api/auth", authRoute)
 app.use("/api/carts", cartRoute)
-app.use("/api/checkout", stripeRoute)
 app.use("/api/orders", orderRoute)
-app.use("/api/products", productRoute)
+app.use("/api/checkout", stripeRoute)
 app.use("/api/users", userRoute)
+app.use("/api/products", productRoute)
 
 
 app.listen(process.env.PORT || 3001, () => {

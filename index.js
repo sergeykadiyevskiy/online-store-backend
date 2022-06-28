@@ -22,10 +22,10 @@ app.use(cors())
 app.use(express.json())
 app.use("/api/auth", authRoute)
 app.use("/api/carts", cartRoute)
-app.use("/api/checkout", stripeRoute)
-app.use("/api/orders", orderRoute)
 app.use("/api/products", productRoute)
+app.use("/api/checkout", stripeRoute)
 app.use("/api/users", userRoute)
+app.use("/api/orders", orderRoute)
 
 
 app.listen(process.env.PORT || 3001, () => {

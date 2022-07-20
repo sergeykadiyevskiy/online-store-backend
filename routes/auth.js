@@ -1,10 +1,10 @@
-const User = require("../models/User");
 const router = require("express").Router();
-const jwt = require("jsonwebtoken");
+const User = require("../models/User");
 const CryptoJS = require("crypto-js");
+const jwt = require("jsonwebtoken");
 
-// SIGN UP
-router.post("/signup", async (req, res) => {
+//REGISTER
+router.post("/register", async (req, res) => {
   const newUser = new User({
     username: req.body.username,
     email: req.body.email,
@@ -22,34 +22,34 @@ router.post("/signup", async (req, res) => {
   }
 });
 
-// LOG IN
+//LOGIN
+
 router.post("/login", async (req, res) => {
   try {
     const user = await User.findOne({ username: req.body.username });
-    !user &&
-      res.status(401).json("Error entering credentials. Please try again");
+    !user && res.status(401).json("Wrong credentials!");
 
-    const hashedPass = CryptoJS.AES.decrypt(
+    const hashedPassword = CryptoJS.AES.decrypt(
       user.password,
       process.env.PHRASE_PASS
     );
-    const originalPassword = hashedPass.toString(CryptoJS.enc.Utf8);
+    const OriginalPassword = hashedPassword.toString(CryptoJS.enc.Utf8);
 
-    originalPassword !== req.body.password &&
-      res.status(401).json("Error entering credentials. Please try again");
+    OriginalPassword !== req.body.password &&
+      res.status(401).json("Wrong credentials!");
 
-    const token = jwt.sign(
+    const accessToken = jwt.sign(
       {
         id: user._id,
-        admin: user.isAdmin,
+        isAdmin: user.isAdmin,
       },
       process.env.JWT_SECRET,
-      { expiresIn: "1d" }
+      {expiresIn:"3d"}
     );
 
     const { password, ...others } = user._doc;
 
-    res.status(200).json({...others, token});
+    res.status(200).json({...others, accessToken});
   } catch (err) {
     res.status(500).json(err);
   }
